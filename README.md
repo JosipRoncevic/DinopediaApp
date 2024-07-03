@@ -1,0 +1,2 @@
+# DinopediaApp
+RWA projekt
