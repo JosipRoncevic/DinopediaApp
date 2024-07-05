@@ -1,12 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { DinosaurService } from './dinosaur.service';
 import { CreateDinosaurDto } from './create-dinosaur.dto';
+import { UpdateDinosaurDto } from './update.dinosaur.dto';
 
 @Controller('dinosaurs')
 export class DinosaurController {
     constructor(private readonly dinosaurService: DinosaurService) { }
 
     @Post()
+    @UsePipes(new ValidationPipe({ whitelist: true }))
     addDinosaur(@Body() createDinosaurDto: CreateDinosaurDto) {
         const generatedId = this.dinosaurService.insertDinosaur(
             createDinosaurDto.name,
@@ -23,19 +25,16 @@ export class DinosaurController {
 
     @Get(':id')
     getDinosaur(@Param('id') dinoId: string) {
-        console.log('Idem u servis')
         return this.dinosaurService.getSingleDino(+dinoId);
     }
 
     @Patch(':id')
+    @UsePipes(new ValidationPipe({ whitelist: true }))
     updateDinosaur(
         @Param('id') dinoId: string,
-        @Body('name') dinoName: string,
-        @Body('period') dinoPeriod: string,
-        @Body('diet') dinoDiet: string,
+        @Body() updateDinosaurDto: UpdateDinosaurDto,
     ) {
-        this.dinosaurService.updateDinosaur(+dinoId, dinoName, dinoPeriod, dinoDiet);
-        return null;
+        return this.dinosaurService.updateDinosaur(+dinoId, updateDinosaurDto);
     }
 
     @Delete(':id')

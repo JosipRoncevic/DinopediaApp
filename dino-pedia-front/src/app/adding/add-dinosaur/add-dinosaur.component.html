@@ -13,6 +13,9 @@
             <label for="txtDiet" class="form-label">Diet</label>
             <input type="text" class="form-control" id="txtDiet" name="diet" [(ngModel)]="dinosaurs.diet">
         </div>
+        <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+        </div>
         <button type="button" class="btn btn-primary" (click)="create()">Create</button>
         <a class="btn btn-primary" routerLink="/">Back</a>
     </form>

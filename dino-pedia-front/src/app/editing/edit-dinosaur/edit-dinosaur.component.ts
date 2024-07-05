@@ -13,6 +13,7 @@ export class EditDinosaurComponent implements OnInit {
   constructor(private route: ActivatedRoute, private dinosaurService: DinosaursService, private router: Router) { }
 
   itemId: string = '';
+  errorMessage: string = '';
 
   dinosaurs: CreateOrUpdateDinosaur = {
     name: '',
@@ -28,7 +29,6 @@ export class EditDinosaurComponent implements OnInit {
   }
 
   getById() {
-    console.log('imam id')
     this.dinosaurService.getById(this.itemId).subscribe((data) => {
       this.dinosaurs.name = data.name;
       this.dinosaurs.period = data.period;
@@ -37,10 +37,17 @@ export class EditDinosaurComponent implements OnInit {
   }
 
   update() {
-    console.log('Update se trbao dogoditi')
-    this.dinosaurService.update(this.itemId, this.dinosaurs).subscribe(() => {
-      this.router.navigate(['/']);
-    })
+    this.dinosaurService.update(this.itemId, this.dinosaurs).subscribe({
+      next: () => this.router.navigate(['/']),
+      error: (error) => this.handleError(error)
+    });
   }
 
+  handleError(error: any) {
+    if (error.status === 400) {
+      this.errorMessage = 'All fields are required.';
+    } else {
+      this.errorMessage = 'An unexpected error occurred. Please try again later.';
+    }
+  }
 }

@@ -24,44 +24,22 @@ let DinosaurService = class DinosaurService {
         return [...this.dinosaurs];
     }
     getSingleDino(dinoId) {
-        console.log('Idem na findDino');
-        console.log('Ovo je dinoId: ' + dinoId);
         const dinosaur = this.findDino(dinoId)[0];
         return { ...dinosaur };
     }
-    updateDinosaur(dinoId, name, period, diet) {
+    updateDinosaur(dinoId, updateDinosaurDto) {
         const [dinosaur, index] = this.findDino(dinoId);
-        const updatedDinosaur = { ...dinosaur };
-        if (name) {
-            updatedDinosaur.name = name;
-        }
-        if (period) {
-            updatedDinosaur.period = period;
-        }
-        if (diet) {
-            updatedDinosaur.diet = diet;
-        }
+        const updatedDinosaur = { ...dinosaur, ...updateDinosaurDto };
         this.dinosaurs[index] = updatedDinosaur;
+        return { updated: true, dinosaur: updatedDinosaur };
     }
     deleteDinosaur(dinoId) {
         const index = this.findDino(dinoId)[1];
         this.dinosaurs.splice(index, 1);
     }
-    checkDinosaurExists(dinoId) {
-        console.log('Checking dinosaur with ID:', dinoId);
-        console.log('Current dinosaurs:', this.dinosaurs);
-        const dinoExists = this.dinosaurs.some(dino => dino.id === Number(dinoId));
-        console.log('Dinosaur exists:', dinoExists);
-        if (!dinoExists) {
-            throw new common_1.NotFoundException(`Dinosaur with ID ${dinoId} does not exist.`);
-        }
-    }
     findDino(id) {
-        console.log(id);
         const dinoIndex = this.dinosaurs.findIndex(dino => dino.id === id);
         const dinosaur = this.dinosaurs[dinoIndex];
-        console.log(dinoIndex);
-        console.log(dinosaur);
         if (!dinosaur) {
             throw new common_1.NotFoundException('Could not find the dinosaur.');
         }

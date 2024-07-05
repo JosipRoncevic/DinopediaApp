@@ -16,14 +16,24 @@ export class AddDinosaurComponent implements OnInit {
     diet: '',
   };
 
+  errorMessage: string = '';
+
   constructor(private dinosaurService: DinosaursService, private router: Router) { }
 
   ngOnInit(): void { }
 
   create() {
-    console.log('Create button clicked');
-    this.dinosaurService.create(this.dinosaurs).subscribe(() => {
-      this.router.navigate(['/']);
+    this.dinosaurService.create(this.dinosaurs).subscribe({
+      next: () => this.router.navigate(['/']),
+      error: (error) => this.handleError(error)
     });
+  }
+
+  handleError(error: any) {
+    if (error.status === 400) {
+      this.errorMessage = 'All fields are required.';
+    } else {
+      this.errorMessage = 'An unexpected error occurred. Please try again later.';
+    }
   }
 }

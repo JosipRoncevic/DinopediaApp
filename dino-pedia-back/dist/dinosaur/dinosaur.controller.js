@@ -16,6 +16,7 @@ exports.DinosaurController = void 0;
 const common_1 = require("@nestjs/common");
 const dinosaur_service_1 = require("./dinosaur.service");
 const create_dinosaur_dto_1 = require("./create-dinosaur.dto");
+const update_dinosaur_dto_1 = require("./update.dinosaur.dto");
 let DinosaurController = class DinosaurController {
     constructor(dinosaurService) {
         this.dinosaurService = dinosaurService;
@@ -28,12 +29,10 @@ let DinosaurController = class DinosaurController {
         return this.dinosaurService.getDinosaurs();
     }
     getDinosaur(dinoId) {
-        console.log('Idem u servis');
         return this.dinosaurService.getSingleDino(+dinoId);
     }
-    updateDinosaur(dinoId, dinoName, dinoPeriod, dinoDiet) {
-        this.dinosaurService.updateDinosaur(+dinoId, dinoName, dinoPeriod, dinoDiet);
-        return null;
+    updateDinosaur(dinoId, updateDinosaurDto) {
+        return this.dinosaurService.updateDinosaur(+dinoId, updateDinosaurDto);
     }
     removeDinosaur(dinoId) {
         this.dinosaurService.deleteDinosaur(+dinoId);
@@ -43,6 +42,7 @@ let DinosaurController = class DinosaurController {
 exports.DinosaurController = DinosaurController;
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.UsePipes)(new common_1.ValidationPipe({ whitelist: true })),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_dinosaur_dto_1.CreateDinosaurDto]),
@@ -63,12 +63,11 @@ __decorate([
 ], DinosaurController.prototype, "getDinosaur", null);
 __decorate([
     (0, common_1.Patch)(':id'),
+    (0, common_1.UsePipes)(new common_1.ValidationPipe({ whitelist: true })),
     __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)('name')),
-    __param(2, (0, common_1.Body)('period')),
-    __param(3, (0, common_1.Body)('diet')),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, String, String]),
+    __metadata("design:paramtypes", [String, update_dinosaur_dto_1.UpdateDinosaurDto]),
     __metadata("design:returntype", void 0)
 ], DinosaurController.prototype, "updateDinosaur", null);
 __decorate([
