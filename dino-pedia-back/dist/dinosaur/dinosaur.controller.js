@@ -21,21 +21,24 @@ let DinosaurController = class DinosaurController {
     constructor(dinosaurService) {
         this.dinosaurService = dinosaurService;
     }
-    addDinosaur(createDinosaurDto) {
-        const generatedId = this.dinosaurService.insertDinosaur(createDinosaurDto.name, createDinosaurDto.period, createDinosaurDto.diet);
+    async addDinosaur(createDinosaurDto) {
+        const generatedId = await this.dinosaurService.insertDinosaur(createDinosaurDto);
         return { id: generatedId };
     }
-    getAllDinosaurs() {
-        return this.dinosaurService.getDinosaurs();
+    async getAllDinosaurs() {
+        const dinosaurs = await this.dinosaurService.getDinosaurs();
+        return dinosaurs;
     }
-    getDinosaur(dinoId) {
-        return this.dinosaurService.getSingleDino(+dinoId);
+    async getDinosaur(dinoId) {
+        const dinosaur = await this.dinosaurService.getSingleDino(dinoId);
+        return dinosaur;
     }
-    updateDinosaur(dinoId, updateDinosaurDto) {
-        return this.dinosaurService.updateDinosaur(+dinoId, updateDinosaurDto);
+    async updateDinosaur(dinoId, updateDinosaurDto) {
+        const updatedDinosaur = await this.dinosaurService.updateDinosaur(dinoId, updateDinosaurDto);
+        return updatedDinosaur;
     }
-    removeDinosaur(dinoId) {
-        this.dinosaurService.deleteDinosaur(+dinoId);
+    async removeDinosaur(dinoId) {
+        await this.dinosaurService.deleteDinosaur(dinoId);
         return null;
     }
 };
@@ -46,20 +49,20 @@ __decorate([
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_dinosaur_dto_1.CreateDinosaurDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], DinosaurController.prototype, "addDinosaur", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], DinosaurController.prototype, "getAllDinosaurs", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], DinosaurController.prototype, "getDinosaur", null);
 __decorate([
     (0, common_1.Patch)(':id'),
@@ -68,14 +71,14 @@ __decorate([
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, update_dinosaur_dto_1.UpdateDinosaurDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], DinosaurController.prototype, "updateDinosaur", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], DinosaurController.prototype, "removeDinosaur", null);
 exports.DinosaurController = DinosaurController = __decorate([
     (0, common_1.Controller)('dinosaurs'),

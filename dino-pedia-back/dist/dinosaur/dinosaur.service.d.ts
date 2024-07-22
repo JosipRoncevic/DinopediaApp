@@ -1,25 +1,14 @@
-import { Dinosaur } from './dinosaur.model';
+import { Model } from 'mongoose';
+import { CreateDinosaurDto } from './create-dinosaur.dto';
 import { UpdateDinosaurDto } from './update.dinosaur.dto';
+import { DinosaurDocument, Dinosaurs } from './schema/dinosaurs.schema';
 export declare class DinosaurService {
-    private idCounter;
-    private dinosaurs;
-    insertDinosaur(name: string, period: string, diet: string): number;
-    getDinosaurs(): Dinosaur[];
-    getSingleDino(dinoId: number): {
-        id: number;
-        name: string;
-        period: string;
-        diet: string;
-    };
-    updateDinosaur(dinoId: number, updateDinosaurDto: UpdateDinosaurDto): {
-        updated: boolean;
-        dinosaur: {
-            name: string;
-            period: string;
-            diet: string;
-            id: number;
-        };
-    };
-    deleteDinosaur(dinoId: number): void;
+    private readonly dinosaurModel;
+    constructor(dinosaurModel: Model<DinosaurDocument>);
+    insertDinosaur(createDinosaurDto: CreateDinosaurDto): Promise<string>;
+    getDinosaurs(): Promise<Dinosaurs[]>;
+    getSingleDino(dinoId: string): Promise<Dinosaurs>;
+    updateDinosaur(dinoId: string, updateDinosaurDto: UpdateDinosaurDto): Promise<Dinosaurs>;
+    deleteDinosaur(dinoId: string): Promise<void>;
     private findDino;
 }

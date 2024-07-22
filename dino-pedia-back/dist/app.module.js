@@ -11,12 +11,13 @@ const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const dinosaur_module_1 = require("./dinosaur/dinosaur.module");
+const mongoose_1 = require("@nestjs/mongoose");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [dinosaur_module_1.DinosaurModule,],
+        imports: [mongoose_1.MongooseModule.forRoot("mongodb+srv://josip:ovojepasswordkrejzi2004@cluster0.kuij2n1.mongodb.net/DinopediaDB?retryWrites=true&w=majority&appName=Cluster0"), dinosaur_module_1.DinosaurModule,],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })

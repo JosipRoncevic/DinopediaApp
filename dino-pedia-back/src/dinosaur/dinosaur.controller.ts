@@ -9,37 +9,33 @@ export class DinosaurController {
 
     @Post()
     @UsePipes(new ValidationPipe({ whitelist: true }))
-    addDinosaur(@Body() createDinosaurDto: CreateDinosaurDto) {
-        const generatedId = this.dinosaurService.insertDinosaur(
-            createDinosaurDto.name,
-            createDinosaurDto.period,
-            createDinosaurDto.diet,
-        );
+    async addDinosaur(@Body() createDinosaurDto: CreateDinosaurDto) {
+        const generatedId = await this.dinosaurService.insertDinosaur(createDinosaurDto);
         return { id: generatedId };
     }
 
     @Get()
-    getAllDinosaurs() {
-        return this.dinosaurService.getDinosaurs();
+    async getAllDinosaurs() {
+        const dinosaurs = await this.dinosaurService.getDinosaurs();
+        return dinosaurs;
     }
 
     @Get(':id')
-    getDinosaur(@Param('id') dinoId: string) {
-        return this.dinosaurService.getSingleDino(+dinoId);
+    async getDinosaur(@Param('id') dinoId: string) {
+        const dinosaur = await this.dinosaurService.getSingleDino(dinoId);
+        return dinosaur;
     }
 
     @Patch(':id')
     @UsePipes(new ValidationPipe({ whitelist: true }))
-    updateDinosaur(
-        @Param('id') dinoId: string,
-        @Body() updateDinosaurDto: UpdateDinosaurDto,
-    ) {
-        return this.dinosaurService.updateDinosaur(+dinoId, updateDinosaurDto);
+    async updateDinosaur(@Param('id') dinoId: string, @Body() updateDinosaurDto: UpdateDinosaurDto) {
+        const updatedDinosaur = await this.dinosaurService.updateDinosaur(dinoId, updateDinosaurDto);
+        return updatedDinosaur;
     }
 
     @Delete(':id')
-    removeDinosaur(@Param('id') dinoId: string) {
-        this.dinosaurService.deleteDinosaur(+dinoId);
+    async removeDinosaur(@Param('id') dinoId: string) {
+        await this.dinosaurService.deleteDinosaur(dinoId);
         return null;
     }
 }

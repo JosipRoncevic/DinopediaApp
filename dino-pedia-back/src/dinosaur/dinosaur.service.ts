@@ -1,47 +1,57 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Dinosaur } from './dinosaur.model';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { CreateDinosaurDto } from './create-dinosaur.dto';
 import { UpdateDinosaurDto } from './update.dinosaur.dto';
-
+import { DinosaurDocument, Dinosaurs } from './schema/dinosaurs.schema';
 
 @Injectable()
 export class DinosaurService {
-    private idCounter = 1;
-    private dinosaurs: Dinosaur[] = [];
+    constructor(
+        @InjectModel(Dinosaurs.name) private readonly dinosaurModel: Model<DinosaurDocument>
+    ) { }
 
-    insertDinosaur(name: string, period: string, diet: string) {
-        const dinoId = this.idCounter++;
-        const newDino = new Dinosaur(dinoId, name, period, diet);
-        this.dinosaurs.push(newDino);
-        return dinoId;
+    async insertDinosaur(createDinosaurDto: CreateDinosaurDto): Promise<string> {
+        const newDino = new this.dinosaurModel(createDinosaurDto);
+        const result = await newDino.save();
+        return result.id;
     }
 
-    getDinosaurs() {
-        return [...this.dinosaurs];
+    async getDinosaurs(): Promise<Dinosaurs[]> {
+        const dinosaurs = await this.dinosaurModel.find().exec();
+        return dinosaurs;
     }
 
-    getSingleDino(dinoId: number) {
-        const dinosaur = this.findDino(dinoId)[0];
-        return { ...dinosaur };
+    async getSingleDino(dinoId: string): Promise<Dinosaurs> {
+        const dinosaur = await this.findDino(dinoId);
+        return dinosaur;
     }
 
-    updateDinosaur(dinoId: number, updateDinosaurDto: UpdateDinosaurDto) {
-        const [dinosaur, index] = this.findDino(dinoId);
-        const updatedDinosaur = { ...dinosaur, ...updateDinosaurDto };
-        this.dinosaurs[index] = updatedDinosaur;
-        return { updated: true, dinosaur: updatedDinosaur };
+    async updateDinosaur(dinoId: string, updateDinosaurDto: UpdateDinosaurDto): Promise<Dinosaurs> {
+        const updatedDinosaur = await this.dinosaurModel.findByIdAndUpdate(dinoId, updateDinosaurDto, { new: true }).exec();
+        if (!updatedDinosaur) {
+            throw new NotFoundException('Could not find the dinosaur.');
+        }
+        return updatedDinosaur;
     }
 
-    deleteDinosaur(dinoId: number) {
-        const index = this.findDino(dinoId)[1];
-        this.dinosaurs.splice(index, 1);
+    async deleteDinosaur(dinoId: string): Promise<void> {
+        const result = await this.dinosaurModel.deleteOne({ _id: dinoId }).exec();
+        if (result.deletedCount === 0) {
+            throw new NotFoundException('Could not find the dinosaur.');
+        }
     }
 
-    private findDino(id: number): [Dinosaur, number] {
-        const dinoIndex = this.dinosaurs.findIndex(dino => dino.id === id);
-        const dinosaur = this.dinosaurs[dinoIndex];
+    private async findDino(id: string): Promise<Dinosaurs> {
+        let dinosaur;
+        try {
+            dinosaur = await this.dinosaurModel.findById(id).exec();
+        } catch (error) {
+            throw new NotFoundException('Could not find the dinosaur.');
+        }
         if (!dinosaur) {
             throw new NotFoundException('Could not find the dinosaur.');
         }
-        return [dinosaur, dinoIndex];
+        return dinosaur;
     }
 }
