@@ -1,5 +1,5 @@
 export interface Dinosaur {
-    id: number;
+    _id: string;
     name: string;
     period: string;
     diet: string;

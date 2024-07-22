@@ -3,15 +3,15 @@
     <form>
         <div class="mb-3">
             <label for="txtName" class="form-label">Name</label>
-            <input type="text" class="form-control" id="txtName" name="name" [(ngModel)]="dinosaurs.name">
+            <input type="text" class="form-control" _id="txtName" name="name" [(ngModel)]="dinosaurs.name">
         </div>
         <div class="mb-3">
             <label for="txtPeriod" class="form-label">Period</label>
-            <input type="text" class="form-control" id="txtPeriod" name="period" [(ngModel)]="dinosaurs.period">
+            <input type="text" class="form-control" _id="txtPeriod" name="period" [(ngModel)]="dinosaurs.period">
         </div>
         <div class="mb-3">
             <label for="txtDiet" class="form-label">Diet</label>
-            <input type="text" class="form-control" id="txtDiet" name="diet" [(ngModel)]="dinosaurs.diet">
+            <input type="text" class="form-control" _id="txtDiet" name="diet" [(ngModel)]="dinosaurs.diet">
         </div>
         <div *ngIf="errorMessage" class="alert alert-danger">
             {{ errorMessage }}

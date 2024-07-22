@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{item.name}}</h5>
                     <p class="card-text">
-                        <b>Id: </b>{{item.id}}
+                        <b>Id: </b>{{item._id}}
                     </p>
                     <p class="card-text">
                         <b>Period: </b>{{item.period}}
@@ -20,8 +20,8 @@
                     </p>
                 </div>
                 <div class="card-body">
-                    <a class="btn btn-primary" [routerLink]="['edit-dinosaur', item.id]">Edit</a>
-                    <button type="button" class="btn btn-danger" (click)="openDeletePopup(item.id)">Delete</button>
+                    <a class="btn btn-primary" [routerLink]="['edit-dinosaur', item._id]">Edit</a>
+                    <button type="button" class="btn btn-danger" (click)="openDeletePopup(item._id)">Delete</button>
                 </div>
             </div>
         </div>
