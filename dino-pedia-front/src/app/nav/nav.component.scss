@@ -2,13 +2,20 @@
     background-color: #FF8C00;
     /* Dark orange color */
     padding: 20px;
-    text-align: center;
     border-bottom: 5px solid #e67e22;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    margin-right: auto;
+    font-size: 1.2em;
 }
 
 .navbar-content {
-    max-width: 1200px;
-    margin: 0 auto;
+    text-align: center;
+    flex-grow: 1;
 }
 
 .navbar-heading {
@@ -21,4 +28,20 @@
     font-size: 1.2em;
     color: white;
     margin-top: 5px;
+}
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+}
+
+.nav-link {
+    margin-left: 1rem;
+    font-size: 1.2em;
+    color: white;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
 }

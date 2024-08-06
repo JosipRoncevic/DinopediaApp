@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { DinosaurService } from './dinosaur.service';
 import { CreateDinosaurDto } from './create-dinosaur.dto';
 import { UpdateDinosaurDto } from './update.dinosaur.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('dinosaurs')
 export class DinosaurController {
@@ -9,7 +10,9 @@ export class DinosaurController {
 
     @Post()
     @UsePipes(new ValidationPipe({ whitelist: true }))
-    async addDinosaur(@Body() createDinosaurDto: CreateDinosaurDto) {
+    async addDinosaur(
+        @Body() createDinosaurDto: CreateDinosaurDto,
+    ) {
         const generatedId = await this.dinosaurService.insertDinosaur(createDinosaurDto);
         return { id: generatedId };
     }

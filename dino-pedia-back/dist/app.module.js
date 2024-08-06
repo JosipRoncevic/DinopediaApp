@@ -12,14 +12,21 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const dinosaur_module_1 = require("./dinosaur/dinosaur.module");
 const mongoose_1 = require("@nestjs/mongoose");
+const users_module_1 = require("./users/users.module");
+const auth_module_1 = require("./auth/auth.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [mongoose_1.MongooseModule.forRoot("mongodb+srv://josip:ovojepasswordkrejzi2004@cluster0.kuij2n1.mongodb.net/DinopediaDB?retryWrites=true&w=majority&appName=Cluster0"), dinosaur_module_1.DinosaurModule,],
-        controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        imports: [
+            mongoose_1.MongooseModule.forRoot("mongodb+srv://josip:ovojepasswordkrejzi2004@cluster0.kuij2n1.mongodb.net/DinopediaDB?retryWrites=true&w=majority&appName=Cluster0"),
+            dinosaur_module_1.DinosaurModule,
+            users_module_1.UsersModule,
+            auth_module_1.AuthModule,
+        ],
+        controllers: [app_controller_1.AppController,],
+        providers: [app_service_1.AppService,],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
