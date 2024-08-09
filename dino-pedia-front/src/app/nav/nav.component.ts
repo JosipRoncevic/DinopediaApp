@@ -1,20 +1,28 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { emiters } from '../emitters/emitters';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss']
 })
-export class NavComponent {
-  constructor(private router: Router) { }
+export class NavComponent implements OnInit {
+  authenticated = false;
 
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+  constructor(private http: HttpClient) { }
+
+  ngOnInit(): void {
+    emiters.authEmitter.subscribe(
+      (auth: boolean) => {
+        this.authenticated = auth;
+      }
+    )
   }
 
-  logout() {
-    localStorage.removeItem('token');
-    this.router.navigate(['/']);
+  logout(): void {
+    this.http.get('http://localhost:3000/users/logout', { withCredentials: true })
+      .subscribe(() => this.authenticated = false)
+    window.location.reload();
   }
 }

@@ -7,11 +7,11 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { LoginComponent } from './auth/login/login.component';
 
 const routes: Routes = [
-  { path: '', component: DinosaursComponent },
+  { path: '', component: DinosaursComponent, },
   { path: 'add-dinosaur', component: AddDinosaurComponent },
   { path: 'edit-dinosaur/:id', component: EditDinosaurComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent }
+  { path: 'signup', component: SignupComponent },
 ];
 
 @NgModule({

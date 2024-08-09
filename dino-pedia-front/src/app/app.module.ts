@@ -3,15 +3,15 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DinosaursModule } from './dinosaurs/dinosaurs.module';
 import { NavComponent } from './nav/nav.component';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { AddDinosaurComponent } from './adding/add-dinosaur/add-dinosaur.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DinosaursComponent } from './dinosaurs/dinosaurs.component';
 import { EditDinosaurComponent } from './editing/edit-dinosaur/edit-dinosaur.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { LoginComponent } from './auth/login/login.component';
+import { AuthService } from './auth/auth.service';
 
 @NgModule({
   declarations: [
@@ -28,9 +28,10 @@ import { LoginComponent } from './auth/login/login.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [AuthService,],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

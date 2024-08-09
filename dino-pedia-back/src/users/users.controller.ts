@@ -3,9 +3,17 @@ import { UsersService } from './users.service';
 import * as bcrypt from 'bcrypt';
 import { LocalAuthGuard } from 'src/auth/local.auth.guard';
 import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
+
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) { }
+
+    @UseGuards(AuthenticatedGuard)
+    @Get('/current')
+    getCurrentUser(@Request() req): any {
+        return req.user;
+    }
+
     //post / signup
     @Post('/signup')
     async addUser(

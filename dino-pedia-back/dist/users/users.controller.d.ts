@@ -2,6 +2,7 @@ import { UsersService } from './users.service';
 export declare class UsersController {
     private readonly usersService;
     constructor(usersService: UsersService);
+    getCurrentUser(req: any): any;
     addUser(userPassword: string, userName: string): Promise<{
         msg: string;
         userId: any;

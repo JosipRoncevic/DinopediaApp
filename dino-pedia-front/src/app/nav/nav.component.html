@@ -7,8 +7,8 @@
         <p class="navbar-text">Explore the world of Dinosaurs</p>
     </div>
     <div class="navbar-links">
-        <a *ngIf="!isLoggedIn()" routerLink="/login" class="nav-link">Login</a>
-        <a *ngIf="!isLoggedIn()" routerLink="/signup" class="nav-link">Sign Up</a>
-        <a *ngIf="isLoggedIn()" (click)="logout()" class="nav-link">Logout</a>
+        <a *ngIf="!authenticated" routerLink="/login" class="nav-link">Login</a>
+        <a *ngIf="!authenticated" routerLink="/signup" class="nav-link">Sign Up</a>
+        <a *ngIf="authenticated" (click)="logout()" class="nav-link">Logout</a>
     </div>
 </nav>

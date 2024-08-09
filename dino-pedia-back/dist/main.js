@@ -8,11 +8,18 @@ const passport = require("passport");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.useGlobalPipes(new common_1.ValidationPipe());
-    app.enableCors();
+    app.enableCors({
+        origin: 'http://localhost:4200',
+        credentials: true,
+    });
     app.use(session({
-        secret: "keyboard",
+        secret: 'keyboard',
         resave: false,
         saveUninitialized: false,
+        cookie: {
+            httpOnly: true,
+            secure: false,
+        },
     }));
     app.use(passport.initialize());
     app.use(passport.session());

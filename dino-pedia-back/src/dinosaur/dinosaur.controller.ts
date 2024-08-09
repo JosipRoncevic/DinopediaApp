@@ -2,7 +2,6 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, UsePipes,
 import { DinosaurService } from './dinosaur.service';
 import { CreateDinosaurDto } from './create-dinosaur.dto';
 import { UpdateDinosaurDto } from './update.dinosaur.dto';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller('dinosaurs')
 export class DinosaurController {
@@ -28,7 +27,6 @@ export class DinosaurController {
         const dinosaur = await this.dinosaurService.getSingleDino(dinoId);
         return dinosaur;
     }
-
     @Patch(':id')
     @UsePipes(new ValidationPipe({ whitelist: true }))
     async updateDinosaur(@Param('id') dinoId: string, @Body() updateDinosaurDto: UpdateDinosaurDto) {
