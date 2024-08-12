@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './users.model';
@@ -12,8 +12,16 @@ export class UsersService {
             username,
             password,
         });
-        await newUser.save();
-        return newUser;
+        try {
+            await newUser.save();
+            return newUser;
+        } catch (error) {
+            if (error.code === 11000) {  // MongoDB duplicate key error code
+                throw new ConflictException('Username already exists');
+            } else {
+                throw new InternalServerErrorException('Failed to create user');
+            }
+        }
     }
 
     async getUser(userName: string) {

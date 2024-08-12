@@ -18,6 +18,7 @@ const users_service_1 = require("./users.service");
 const bcrypt = require("bcrypt");
 const local_auth_guard_1 = require("../auth/local.auth.guard");
 const authenticated_guard_1 = require("../auth/authenticated.guard");
+const users_dto_1 = require("./users.dto");
 let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
@@ -25,10 +26,10 @@ let UsersController = class UsersController {
     getCurrentUser(req) {
         return req.user;
     }
-    async addUser(userPassword, userName) {
+    async addUser(createusersdto) {
         const saltOrRounds = 10;
-        const hashedPassword = await bcrypt.hash(userPassword, saltOrRounds);
-        const result = await this.usersService.insertUser(userName, hashedPassword);
+        const hashedPassword = await bcrypt.hash(createusersdto.password, saltOrRounds);
+        const result = await this.usersService.insertUser(createusersdto.username, hashedPassword);
         return {
             msg: 'User successfully registered',
             userId: result.id,
@@ -59,11 +60,11 @@ __decorate([
     __metadata("design:returntype", Object)
 ], UsersController.prototype, "getCurrentUser", null);
 __decorate([
+    (0, common_1.UsePipes)(new common_1.ValidationPipe({ whitelist: true })),
     (0, common_1.Post)('/signup'),
-    __param(0, (0, common_1.Body)('password')),
-    __param(1, (0, common_1.Body)('username')),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [users_dto_1.CreateUsersDto]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "addUser", null);
 __decorate([

@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
@@ -11,17 +11,11 @@ export class AuthService {
     constructor(private http: HttpClient, private router: Router) { }
 
     signup(username: string, password: string) {
-        return this.http.post(`${this.baseUrl}/signup`, { username, password })
-            .subscribe(() => {
-                this.router.navigate(['/login']);
-            });
+        return this.http.post(`${this.baseUrl}/signup`, { username, password });
     }
 
     login(username: string, password: string) {
-        return this.http.post(`${this.baseUrl}/login`, { username, password }, { withCredentials: true })
-            .subscribe(() => {
-                this.router.navigate(['/']);
-            });
+        return this.http.post(`${this.baseUrl}/login`, { username, password }, { withCredentials: true });
     }
 
     getCurrentUser() {

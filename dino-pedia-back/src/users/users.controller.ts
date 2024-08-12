@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import * as bcrypt from 'bcrypt';
 import { LocalAuthGuard } from 'src/auth/local.auth.guard';
 import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
+import { CreateUsersDto } from './users.dto';
 
 @Controller('users')
 export class UsersController {
@@ -15,15 +16,15 @@ export class UsersController {
     }
 
     //post / signup
+    @UsePipes(new ValidationPipe({ whitelist: true }))
     @Post('/signup')
     async addUser(
-        @Body('password') userPassword: string,
-        @Body('username') userName: string,
+        @Body() createusersdto: CreateUsersDto,
     ) {
         const saltOrRounds = 10;
-        const hashedPassword = await bcrypt.hash(userPassword, saltOrRounds);
+        const hashedPassword = await bcrypt.hash(createusersdto.password, saltOrRounds);
         const result = await this.usersService.insertUser(
-            userName,
+            createusersdto.username,
             hashedPassword,
         );
         return {

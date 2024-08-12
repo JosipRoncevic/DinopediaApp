@@ -12,6 +12,9 @@
                 <input type="password" class="form-control" id="password" formControlName="password"
                     placeholder="Password">
             </div>
+            <div *ngIf="errorMessage" class="alert alert-danger">
+                {{ errorMessage }}
+            </div>
             <button type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
         </form>
     </div>

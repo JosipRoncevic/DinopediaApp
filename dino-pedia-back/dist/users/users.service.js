@@ -22,12 +22,26 @@ let UsersService = class UsersService {
     }
     async insertUser(userName, password) {
         const username = userName.toLowerCase();
+        if (!password || password.trim() === '') {
+            throw new common_1.ConflictException('Password is required');
+        }
         const newUser = new this.userModel({
             username,
             password,
         });
-        await newUser.save();
-        return newUser;
+        try {
+            await newUser.validate();
+            await newUser.save();
+            return newUser;
+        }
+        catch (error) {
+            if (error.code === 11000) {
+                throw new common_1.ConflictException('Username already exists');
+            }
+            else {
+                throw new common_1.InternalServerErrorException('Failed to create user');
+            }
+        }
     }
     async getUser(userName) {
         const username = userName.toLowerCase();
