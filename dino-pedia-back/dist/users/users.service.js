@@ -22,15 +22,11 @@ let UsersService = class UsersService {
     }
     async insertUser(userName, password) {
         const username = userName.toLowerCase();
-        if (!password || password.trim() === '') {
-            throw new common_1.ConflictException('Password is required');
-        }
         const newUser = new this.userModel({
             username,
             password,
         });
         try {
-            await newUser.validate();
             await newUser.save();
             return newUser;
         }
